@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.renato.trabalho1mobile1application.MainActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <Button
+        android:id="@+id/button_camera"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:text="Camera"
+        android:onClick="clickCamera"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/button_video"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:text="Video"
+        android:onClick="clickVideo"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_toRightOf="@+id/button_camera"
+        android:layout_marginLeft="30dp"/>
+
+    <Button
+        android:id="@+id/button_map"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:text="Map"
+        android:onClick="clickMap"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_toRightOf="@+id/button_video"
+        android:layout_marginLeft="30dp"/>
+
+    <Button
+        android:id="@+id/button_telefone"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:text="Fone"
+        android:onClick="clickPhone"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_below="@+id/button_camera"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/button_calendar"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/button_video"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/button_telefone"
+        android:onClick="clickCalendario"
+        android:text="Calendario"
+        android:textSize="10sp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/button_web"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:text="Google"
+        android:onClick="clickGoogle"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_toRightOf="@+id/button_calendar"
+        android:layout_below="@+id/button_map"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="118dp"
+        android:layout_below="@+id/button_telefone"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="21dp"/>
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="21dp"/>
+
+
+</RelativeLayout>
