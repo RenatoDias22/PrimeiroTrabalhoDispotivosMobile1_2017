@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.media.MediaPlayer;
-import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         Map = (Button) findViewById(R.id.button_map);
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -49,20 +46,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickVideo(View v){
-//        String vidAddress = "https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
-//        Uri vidUri = Uri.parse(vidAddress);
-//        videoView.setVideoURI(vidUri);
-//        videoView.start();
-//        MediaController vidControl = new MediaController(this);
-//        vidControl.setAnchorView(videoView);
-//        videoView.setMediaController(vidControl);
-//        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mp) {
-//                mp.setLooping(true);
-//                videoView.start();
-//            }
-//        });
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse("https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4"), "video/mp4");
@@ -82,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickPhone(View v){
-//        String phone = "+558597720565";
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setData(Uri.parse("tel:"+phone));
-//        startActivity(callIntent);
         Intent dial = new Intent();
         dial.setAction("android.intent.action.DIAL");
         dial.setData(Uri.parse("tel:"));
