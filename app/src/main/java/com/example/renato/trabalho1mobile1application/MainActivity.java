@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
+            imageView.setVisibility(imageView.VISIBLE);
         }
     }
 
@@ -126,5 +127,11 @@ public class MainActivity extends AppCompatActivity {
 
         // debug:
         Log.i("Alarme", "Alarme agendado!");
+    }
+
+    public void clickMensagem(View view) {
+        Intent intentsms = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" + "" ) );
+        intentsms.putExtra( "sms_body", "Renato é lindo!!!" );
+        startActivity( intentsms );
     }
 }
