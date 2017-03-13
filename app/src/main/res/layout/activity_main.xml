@@ -94,7 +94,7 @@
         android:layout_marginTop="10dp"/>
 
     <Button
-        android:id="@+id/button_calculadora"
+        android:id="@+id/button_msg"
         android:layout_width="88dp"
         android:layout_height="48dp"
         android:layout_below="@+id/button_calendar"
@@ -106,6 +106,19 @@
         android:textSize="11sp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/button_album"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:text="Album"
+        android:onClick="clickAlbum"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_toRightOf="@+id/button_msg"
+        android:layout_below="@+id/button_web"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"/>
 
     <ImageView
         android:id="@+id/imageView"

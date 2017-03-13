@@ -8,50 +8,58 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final int CAMERA_REQUEST = 1888;
-    public Button Camera;
-    public Button Video;
-    public Button Map;
+    private int PICK_IMAGE_REQUEST = 1;
+
     private ImageView imageView;
     private VideoView videoView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Camera=(Button)findViewById(R.id.button_camera);
         imageView = (ImageView)findViewById(R.id.imageView);
-
-        Video = (Button) findViewById(R.id.button_video);
         videoView = (VideoView) findViewById(R.id.videoView);
-
-        Map = (Button) findViewById(R.id.button_map);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-            imageView.setVisibility(imageView.VISIBLE);
+        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == CAMERA_REQUEST) && resultCode == Activity.RESULT_OK) {
+
+            if(requestCode == PICK_IMAGE_REQUEST) {
+                Uri uri = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    imageView.setImageBitmap(bitmap);
+                    imageView.setVisibility(imageView.VISIBLE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else {
+
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(photo);
+                imageView.setVisibility(imageView.VISIBLE);
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        Log.i("Alarme", "Alarme finalizado!");
 
         // primeiro cria a intenção
         Intent it = new Intent("EXECUTAR_ALARME");
@@ -124,14 +132,19 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
         long time = c.getTimeInMillis();
         alarme.set(AlarmManager.RTC_WAKEUP, time, p);
-
-        // debug:
-        Log.i("Alarme", "Alarme agendado!");
+        Toast.makeText(this, "Alarme Agendado!", Toast.LENGTH_SHORT).show();
     }
 
     public void clickMensagem(View view) {
         Intent intentsms = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" + "" ) );
         intentsms.putExtra( "sms_body", "Renato é lindo!!!" );
         startActivity( intentsms );
+    }
+
+    public void clickAlbum(View v){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 }
