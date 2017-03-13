@@ -1,6 +1,8 @@
 package com.example.renato.trabalho1mobile1application;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,10 +10,13 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.VideoView;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
@@ -40,6 +45,22 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageBitmap(photo);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Log.i("Alarme", "Alarme finalizado!");
+
+        // primeiro cria a intenção
+        Intent it = new Intent("EXECUTAR_ALARME");
+        PendingIntent p = PendingIntent.getBroadcast(MainActivity.this, 0, it, 0);
+
+        // cancela o amarme
+        AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarme.cancel(p);
+    }
+
     public void clickCamera(View v){
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         startActivityForResult(intent, CAMERA_REQUEST);
@@ -85,5 +106,25 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = Uri.parse(endereco);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);;
+    }
+
+
+    public void clickAlarme(View view) {
+        // primeiro cria a intenção
+        Intent it = new Intent("EXECUTAR_ALARME");
+        PendingIntent p = PendingIntent.getBroadcast(MainActivity.this, 0, it, 0);
+
+        // precisamos pegar agora + 10segundos
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.add(Calendar.SECOND, 10); // +10 segundos
+
+        // agendar o alarme
+        AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long time = c.getTimeInMillis();
+        alarme.set(AlarmManager.RTC_WAKEUP, time, p);
+
+        // debug:
+        Log.i("Alarme", "Alarme agendado!");
     }
 }
