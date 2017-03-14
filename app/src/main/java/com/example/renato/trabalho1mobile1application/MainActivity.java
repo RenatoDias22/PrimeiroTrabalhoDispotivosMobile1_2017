@@ -23,9 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
     private int PICK_IMAGE_REQUEST = 1;
+    private int REQUEST_VIDEO_CAPTURE = 2;
 
     private ImageView imageView;
     private VideoView videoView;
+    public Uri videoUri;
 
 
     @Override
@@ -37,24 +39,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == CAMERA_REQUEST) && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == CAMERA_REQUEST || requestCode == REQUEST_VIDEO_CAPTURE) && resultCode == Activity.RESULT_OK) {
 
-            if(requestCode == PICK_IMAGE_REQUEST) {
-                Uri uri = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setVisibility(imageView.VISIBLE);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (requestCode == REQUEST_VIDEO_CAPTURE) {
+                this.videoUri = data.getData();
+                imageView.setVisibility(imageView.INVISIBLE);
+                videoView.setVisibility(videoView.VISIBLE);
+//                videoView.start();
             }else {
 
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                imageView.setImageBitmap(photo);
-                imageView.setVisibility(imageView.VISIBLE);
+                if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+                    Uri uri = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        imageView.setImageBitmap(bitmap);
+                        imageView.setVisibility(imageView.VISIBLE);
+                        videoView.setVisibility(videoView.INVISIBLE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    imageView.setImageBitmap(photo);
+                    imageView.setVisibility(imageView.VISIBLE);
+                    videoView.setVisibility(videoView.INVISIBLE);
+                }
             }
         }
+
     }
 
     @Override
@@ -146,5 +158,17 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    public void clickGravarVideo(View view) {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+        }
+    }
+    public void playVideo(View v){
+        videoView.setVideoURI(this.videoUri);
+        videoView.requestFocus();
+        videoView.start();
     }
 }

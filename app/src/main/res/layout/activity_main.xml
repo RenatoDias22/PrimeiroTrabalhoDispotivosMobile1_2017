@@ -119,11 +119,23 @@
         android:layout_below="@+id/button_web"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp"/>
+    <Button
+        android:id="@+id/button_gravarVideo"
+        android:layout_width="88dp"
+        android:layout_height="58dp"
+        android:text="Gravar Video"
+        android:onClick="clickGravarVideo"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_toRightOf="@+id/button_msg"
+        android:layout_below="@+id/button_album"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"/>
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
         app:srcCompat="@mipmap/ic_launcher"
         tools:layout_editor_absoluteX="19dp"
         tools:layout_editor_absoluteY="118dp"
@@ -132,12 +144,29 @@
         android:layout_alignParentStart="true"
         android:visibility="invisible"
         android:layout_marginTop="21dp"/>
+
+    <Button
+        android:id="@+id/button_play"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/imageView"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:onClick="playVideo"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="10dp"/>
+
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/imageView"
-        android:layout_marginTop="21dp"/>
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"/>
+
+
+
 
 
 </RelativeLayout>
