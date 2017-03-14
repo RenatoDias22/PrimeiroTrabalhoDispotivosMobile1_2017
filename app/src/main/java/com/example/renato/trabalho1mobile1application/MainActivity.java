@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -22,8 +23,9 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
-    private int PICK_IMAGE_REQUEST = 1;
-    private int REQUEST_VIDEO_CAPTURE = 2;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int REQUEST_VIDEO_CAPTURE = 2;
+    private static final int RESULT_LOAD_IMAGE = 3;
 
     private ImageView imageView;
     private VideoView videoView;
@@ -39,16 +41,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == CAMERA_REQUEST || requestCode == REQUEST_VIDEO_CAPTURE) && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == CAMERA_REQUEST || requestCode == REQUEST_VIDEO_CAPTURE
+                || requestCode == RESULT_LOAD_IMAGE) && resultCode == Activity.RESULT_OK) {
 
-            if (requestCode == REQUEST_VIDEO_CAPTURE) {
-                this.videoUri = data.getData();
-                imageView.setVisibility(imageView.INVISIBLE);
-                videoView.setVisibility(videoView.VISIBLE);
-//                videoView.start();
-            }else {
-
-                if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            MediaController mediaController = new
+                    MediaController(this);
+            switch (requestCode){
+                case PICK_IMAGE_REQUEST:
                     Uri uri = data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -58,15 +57,35 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                } else {
+                    break;
+
+                case REQUEST_VIDEO_CAPTURE:
+                    this.videoUri = data.getData();
+                    imageView.setVisibility(imageView.INVISIBLE);
+                    videoView.setVisibility(videoView.VISIBLE);
+                    videoView.setVideoURI(this.videoUri);
+                    mediaController.setAnchorView(videoView);
+                    videoView.setMediaController(mediaController);
+//                videoView.start();
+                    break;
+
+                case RESULT_LOAD_IMAGE:
+                    this.videoUri = data.getData();
+                    imageView.setVisibility(imageView.INVISIBLE);
+                    videoView.setVisibility(videoView.VISIBLE);
+                    videoView.setVideoURI(this.videoUri);
+                    mediaController.setAnchorView(videoView);
+                    videoView.setMediaController(mediaController);
+                    break;
+
+                default:
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
                     imageView.setImageBitmap(photo);
                     imageView.setVisibility(imageView.VISIBLE);
                     videoView.setVisibility(videoView.INVISIBLE);
-                }
+                    break;
             }
         }
-
     }
 
     @Override
@@ -170,5 +189,10 @@ public class MainActivity extends AppCompatActivity {
         videoView.setVideoURI(this.videoUri);
         videoView.requestFocus();
         videoView.start();
+    }
+
+    public void clickAlbumVideo(View view) {
+        Intent GaleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(GaleryIntent, RESULT_LOAD_IMAGE);
     }
 }
